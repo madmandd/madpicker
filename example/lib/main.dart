@@ -25,6 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Color _color = Colors.white;
+  IconData _iconData = Icons.monetization_on;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +37,21 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: MadColorPicker(
-            selectedColor: _color,
-            onColorSelected: (color) {
-              setState(() {
-                _color = color;
-                print(_color);
-              });
-            }),
+          selectedColor: _color,
+          selectedIcon: _iconData,
+          onColorSelected: (color) {
+            setState(() {
+              _color = color;
+              print(_color);
+            });
+          },
+          onIconDataSelected: (iconData) {
+            setState(() {
+              _iconData = iconData;
+              print(_iconData);
+            });
+          },
+        ),
       ),
     );
   }

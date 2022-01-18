@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:spring_button/spring_button.dart';
 
 import 'constant.dart';
 
@@ -9,19 +8,24 @@ final PageController pageController = PageController(keepPage: true);
 
 class MadColorPicker extends StatelessWidget {
   final Color selectedColor;
+  final IconData selectedIcon;
   final IconData? iconData;
   final Function(Color) onColorSelected;
+  final Function(IconData) onIconDataSelected;
+
   const MadColorPicker({
     Key? key,
     this.selectedColor = Colors.white,
+    this.selectedIcon = Icons.monetization_on,
     this.iconData,
     required this.onColorSelected,
+    required this.onIconDataSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 66,
+      height: 120,
       width: MediaQuery.of(context).size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -52,6 +56,9 @@ class MadColorPicker extends StatelessWidget {
                       Row(
                         children: createColors(context, Constants.colors3),
                       ),
+                      Row(
+                        children: createIcons(context, Constants.icon1),
+                      )
                     ],
                   ),
                 ),
@@ -60,7 +67,7 @@ class MadColorPicker extends StatelessWidget {
           ),
           SmoothPageIndicator(
             controller: pageController,
-            count: 3,
+            count: 4,
             effect: const ScrollingDotsEffect(
               spacing: 3,
               activeDotColor: Colors.white,
@@ -73,9 +80,39 @@ class MadColorPicker extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
+          SelectedIcon(
+            selectedIconData: selectedIcon,
+          )
         ],
       ),
     );
+  }
+
+  List<Widget> createIcons(BuildContext context, List<IconData> iconDatas) {
+    double size = _correctSizes[iconDatas.length] ??
+        correctButtonSize(iconDatas.length, MediaQuery.of(context).size.width);
+    return [
+      for (var ic in iconDatas)
+        GestureDetector(
+          child: Padding(
+            padding: EdgeInsets.all(size * 0.1),
+            child: AnimatedContainer(
+              height: size,
+              width: size,
+              duration: const Duration(milliseconds: 100),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 2,
+                ),
+              ),
+              child: Icon(ic),
+            ),
+          ),
+          onTap: () => onIconDataSelected.call(ic),
+        ),
+    ];
   }
 
   List<Widget> createColors(BuildContext context, List<Color> colors) {
@@ -83,9 +120,8 @@ class MadColorPicker extends StatelessWidget {
         correctButtonSize(colors.length, MediaQuery.of(context).size.width);
     return [
       for (var c in colors)
-        SpringButton(
-          SpringButtonType.OnlyScale,
-          Padding(
+        GestureDetector(
+          child: Padding(
             padding: EdgeInsets.all(size * 0.1),
             child: AnimatedContainer(
               width: size,
@@ -102,16 +138,13 @@ class MadColorPicker extends StatelessWidget {
                   BoxShadow(
                     blurRadius: size * 0.1,
                     color: Colors.black12,
-                  )
+                  ),
                 ],
               ),
             ),
           ),
           onTap: () => onColorSelected.call(c),
-          useCache: false,
-          scaleCoefficient: 0.9,
-          duration: 1000,
-        ),
+        )
     ];
   }
 
@@ -129,6 +162,28 @@ class MadColorPicker extends StatelessWidget {
     } while (!isSizeOkay);
     _correctSizes[itemSize] = finalSize;
     return finalSize;
+  }
+}
+
+class SelectedIcon extends StatelessWidget {
+  final IconData? selectedIconData;
+  const SelectedIcon({Key? key, this.selectedIconData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 36,
+      height: 36,
+      child: selectedIconData != null ? Icon(selectedIconData, color: Colors.black,) : null,
+       decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(width: 2, color: Colors.white),
+        boxShadow: const [
+          BoxShadow(blurRadius: 0, color: Colors.black38),
+        ],
+      ),
+    );
   }
 }
 
@@ -153,10 +208,13 @@ class SelectedColor extends StatelessWidget {
             )
           : null,
       decoration: BoxDecoration(
-          color: selectedColor,
-          shape: BoxShape.circle,
-          border: Border.all(width: 2, color: Colors.white),
-          boxShadow: const [BoxShadow(blurRadius: 0, color: Colors.black38)]),
+        color: selectedColor,
+        shape: BoxShape.circle,
+        border: Border.all(width: 2, color: Colors.white),
+        boxShadow: const [
+          BoxShadow(blurRadius: 0, color: Colors.black38),
+        ],
+      ),
     );
   }
 }
