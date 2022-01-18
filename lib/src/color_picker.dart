@@ -80,8 +80,11 @@ class MadColorPicker extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-          SelectedIcon(
-            selectedIconData: selectedIcon,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: SelectedIcon(
+              selectedIconData: selectedIcon,
+            ),
           )
         ],
       ),
@@ -105,6 +108,7 @@ class MadColorPicker extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 2,
+                  color: Colors.white
                 ),
               ),
               child: Icon(ic),
