@@ -37,14 +37,8 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: MadColorPicker(
-          selectedColor: _color,
+          isColorPicker: false,
           selectedIcon: _iconData,
-          onColorSelected: (color) {
-            setState(() {
-              _color = color;
-              print(_color);
-            });
-          },
           onIconDataSelected: (iconData) {
             setState(() {
               _iconData = iconData;

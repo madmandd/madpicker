@@ -9,17 +9,19 @@ final PageController pageController = PageController(keepPage: true);
 class MadColorPicker extends StatelessWidget {
   final Color selectedColor;
   final IconData selectedIcon;
+  final bool isColorPicker;
   final IconData? iconData;
-  final Function(Color) onColorSelected;
-  final Function(IconData) onIconDataSelected;
+  final Function(Color)? onColorSelected;
+  final Function(IconData)? onIconDataSelected;
 
   const MadColorPicker({
     Key? key,
     this.selectedColor = Colors.white,
     this.selectedIcon = Icons.monetization_on,
     this.iconData,
-    required this.onColorSelected,
-    required this.onIconDataSelected,
+    this.onColorSelected,
+    this.onIconDataSelected,
+    this.isColorPicker = true,
   }) : super(key: key);
 
   @override
@@ -31,43 +33,72 @@ class MadColorPicker extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: SelectedColor(
-                  iconData: iconData,
-                  selectedColor: selectedColor,
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 52,
-                  child: PageView(
-                    controller: pageController,
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      Row(
-                        children: createColors(context, Constants.colors1),
+          isColorPicker
+              ? Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: SelectedColor(
+                        iconData: iconData,
+                        selectedColor: selectedColor,
                       ),
-                      Row(
-                        children: createColors(context, Constants.colors2),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 52,
+                        child: PageView(
+                          controller: pageController,
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            Row(
+                              children:
+                                  createColors(context, Constants.colors1),
+                            ),
+                            Row(
+                              children:
+                                  createColors(context, Constants.colors2),
+                            ),
+                            Row(
+                              children:
+                                  createColors(context, Constants.colors3),
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: createColors(context, Constants.colors3),
-                      ),
-                      Row(
-                        children: createIcons(context, Constants.icon1),
-                      )
-                    ],
+                    ),
+                  ],
+                )
+              : Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SelectedIcon(
+                      selectedIconData: selectedIcon,
+                    ),
                   ),
-                ),
-              ),
-            ],
-          ),
+                  Expanded(
+                    child: SizedBox(
+                      height: 52,
+                      child: PageView(
+                        controller: pageController,
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          Row(
+                            children: createIcons(context, Constants.icon1),
+                          ),
+                          Row(
+                            children: createIcons(context, Constants.icon1),
+                          ),
+                          Row(
+                            children: createIcons(context, Constants.icon1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ]),
           SmoothPageIndicator(
             controller: pageController,
-            count: 4,
+            count: 3,
             effect: const ScrollingDotsEffect(
               spacing: 3,
               activeDotColor: Colors.white,
@@ -80,12 +111,6 @@ class MadColorPicker extends StatelessWidget {
           const SizedBox(
             height: 6,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: SelectedIcon(
-              selectedIconData: selectedIcon,
-            ),
-          )
         ],
       ),
     );
@@ -106,15 +131,12 @@ class MadColorPicker extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                border: Border.all(
-                  width: 2,
-                  color: Colors.white
-                ),
+                border: Border.all(width: 4, color: Colors.white),
               ),
               child: Icon(ic),
             ),
           ),
-          onTap: () => onIconDataSelected.call(ic),
+          onTap: () => onIconDataSelected!.call(ic),
         ),
     ];
   }
@@ -147,7 +169,7 @@ class MadColorPicker extends StatelessWidget {
               ),
             ),
           ),
-          onTap: () => onColorSelected.call(c),
+          onTap: () => onColorSelected!.call(c),
         )
     ];
   }
@@ -178,8 +200,13 @@ class SelectedIcon extends StatelessWidget {
     return Container(
       width: 36,
       height: 36,
-      child: selectedIconData != null ? Icon(selectedIconData, color: Colors.black,) : null,
-       decoration: BoxDecoration(
+      child: selectedIconData != null
+          ? Icon(
+              selectedIconData,
+              color: Colors.black,
+            )
+          : null,
+      decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
         border: Border.all(width: 2, color: Colors.white),
