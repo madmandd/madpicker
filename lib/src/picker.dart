@@ -33,6 +33,7 @@ class MadColorPicker extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+
           isColorPicker
               ? Row(
                   children: [

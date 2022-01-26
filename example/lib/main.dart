@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:madpicker/madpicker.dart';
 
 void main() {
@@ -35,17 +36,21 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: Center(
-        child: MadColorPicker(
-          isColorPicker: false,
-          selectedIcon: _iconData,
-          onIconDataSelected: (iconData) {
-            setState(() {
-              _iconData = iconData;
-              print(_iconData);
-            });
-          },
-        ),
+      body: Column(
+        children: [
+          Center(
+            child: MadColorPicker(
+              isColorPicker: false,
+              selectedIcon: _iconData,
+              onIconDataSelected: (iconData) {
+                setState(() {
+                  _iconData = iconData;
+                  print(_iconData);
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
