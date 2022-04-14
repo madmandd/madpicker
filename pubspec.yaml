@@ -5,6 +5,8 @@ homepage: https://madstudio.dev/
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
+  # sdk: "<2.12.0"
+  
   flutter: ">=1.17.0"
 
 dependencies:

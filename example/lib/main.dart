@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:madpicker/madpicker.dart';
 
 void main() {
@@ -26,6 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Color _color = Colors.white;
+  IconData _iconData = Icons.change_history_rounded;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +36,26 @@ class _HomeState extends State<Home> {
       ),
       body: Column(
         children: [
+          
           Center(
-            child: MadColorPicker(
-              selectedColor: _color,
-              onColorSelected: (color) {
+            child: MadIconPicker(
+              selectedIconData: _iconData,
+              onIconDataSelected: (iconData) {
                 setState(() {
-                  _color = color!;
+                  _iconData = iconData;
                 });
               },
-            )
+            ),
           ),
+          Center(
+              child: MadColorPicker(
+            selectedColor: _color,
+            onColorSelected: (color) {
+              setState(() {
+                _color = color!;
+              });
+            },
+          )),
         ],
       ),
     );
